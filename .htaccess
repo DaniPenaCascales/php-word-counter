@@ -1,3 +1,0 @@
-RewriteEngine On    # Turn on the rewriting engine
-
-RewriteRule ^api/?$ api.php [NC,L]

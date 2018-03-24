@@ -11,28 +11,28 @@ $search_mode = "find-wc"; //generally, is the faster mode all around. Take a loo
 $file_extension = "*.txt"; //gimme those texts!
 $base_path = $_SERVER["DOCUMENT_ROOT"];
 $threshold = 1000; //word count must surpass this threshold in order to search for word concordance
-$secondary_threshold = 50; //words must have a concordance hihger than this threshold to be returned
+$secondary_threshold = 50; //words must have a concordance higher than this threshold to be returned
 
 //assign values received from request
 if(isset($_POST["searchmode"]))
 {
-	$search_mode = $_POST["searchmode"];
+	$search_mode = $_POST["searchmode"]; //searchmode can be: "locate", "locate-wc", "locate-awk", "find", "find-wc", "find-awk", "php-search". Any other value will return an error by WordCounter class
 }
-if(isset($_POST["filetype"]))
+if(isset($_POST["filetype"])) 
 {
-	$file_extension = "*.".$_POST["filetype"];
+	$file_extension = "*.".$_POST["filetype"]; //filetype only needs to be provided as is (without dot prefix)
 }
-if(isset($_POST["basepath"]))
+if(isset($_POST["basepath"])) 
 {
-	$base_path .= "/".$_POST["basepath"];
+	$base_path .= "/".$_POST["basepath"]; //basepath only needs to be provided as is (without / as prefix/suffix)
 }
 if(isset($_POST["threshold"]))
 {
-	$threshold = $_POST["threshold"];
+	$threshold = intval($_POST["threshold"]); //cast it as int
 }
 if(isset($_POST["secondarythreshold"]))
 {
-	$secondary_threshold = $_POST["secondarythreshold"];
+	$secondary_threshold = intval($_POST["secondarythreshold"]); //cast it as int
 }
 
 //create a new instance of WordCounter with target params

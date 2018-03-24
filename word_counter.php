@@ -139,7 +139,7 @@ class WordCounter
 				{
 					$file_with_wc = explode(" ", $line); //if no regex is needed, explode is faster than preg_split
 					
-					$this->processed_files[] = ["path"=> $file_with_wc[1], "total_count"=>(int)$file_with_wc[0]];
+					$this->processed_files[] = ["path"=> $file_with_wc[1], "total_count"=>(int)$file_with_wc[0]]; //here we don't use intval(), as int casting is faster (and we know that the value returned by shell is an int)
 				}
 				else
 				{

@@ -8,7 +8,7 @@ $_POST  = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
 
 //init variables with defaut values
 $search_mode = "find-wc"; //generally, is the faster mode all around. Take a look at WordCounter class for more info about search modes
-$file_extension = "*.txt"; //gimme those texts!
+$file_extension = "txt"; //gimme those texts!
 $base_path = $_SERVER["DOCUMENT_ROOT"];
 $threshold = 1000; //word count must surpass this threshold in order to search for word concordance
 $secondary_threshold = 50; //words must have a concordance higher than this threshold to be returned
@@ -20,7 +20,7 @@ if(isset($_POST["searchmode"]))
 }
 if(isset($_POST["filetype"])) 
 {
-	$file_extension = "*.".$_POST["filetype"]; //filetype only needs to be provided as is (without dot prefix)
+	$file_extension = $_POST["filetype"]; //filetype only needs to be provided as is (without dot prefix)
 }
 if(isset($_POST["basepath"])) 
 {

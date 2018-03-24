@@ -18,10 +18,10 @@ class WordCounter
 	function __construct($mode, $extension, $path, $threshold, $secondary_threshold)
 	{
 		$this->mode = $mode;
-		$this->extension = $extension;
-		$this->path = $path;
-		$this->threshold = $threshold;
-		$this->secondary_threshold = $secondary_threshold;
+		$this->extension = "*.".preg_replace('/[^a-zA-Z]/', '', $extension); //sanitize the file extension (prevent shell injection)
+		$this->path = realpath($path); //realpath() should return false if the path doesn't exists (prevent shell injection)
+		$this->threshold = preg_replace('/[^0-9]/', '', $threshold); //sanitize the threshold value (prevent shell injection)
+		$this->secondary_threshold = preg_replace('/[^0-9]/', '', $secondary_threshold); //sanitize the secondary threshold value (prevent shell injection)
 		
 		$this->find_files_output = "";
 		$this->processed_files = array();
@@ -33,6 +33,11 @@ class WordCounter
 	//
 	function countWords()
 	{
+		if($this->path == false)
+		{
+			return ["error"=>"incorrect path or path not found!"];
+		}
+		
 		$is_preprocessed = false;
 		
 		switch($this->mode)
@@ -105,7 +110,7 @@ class WordCounter
 			{
 				$this->find_files_output = ""; 
 
-				$objects = new RecursiveIteratorIterator(new RecursiveDirectoryIterator(realpath($this->path),  RecursiveDirectoryIterator::SKIP_DOTS)); //ignore dots on RecursiveDirectoryIterator (seriously, why it isn't a default flag?)
+				$objects = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($this->path,  RecursiveDirectoryIterator::SKIP_DOTS)); //ignore dots on RecursiveDirectoryIterator (seriously, why it isn't a default flag?)
 				foreach($objects as $file)
 				{
 					if ($this->extension == "*.*" || "*.".$file->getExtension() == $this->extension) //if current file matches our target extension, or if the extension is super-wildcard (*.*)
